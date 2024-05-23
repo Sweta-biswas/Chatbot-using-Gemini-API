@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="static/chatbot.gif" alt="Logo" onclick="window.location.href='/';">
+        </div>
+        <div class="logo3">
+            <img src="static/LOGO.png" alt="Logo" style=" margin-right: 650px; height: 40px;">
+        </div>
+    </div>
+    <div class="form-container">
+        <h2>Login</h2>
+        <form id="loginForm" method="post">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" id="email" name="email" placeholder="Enter Email Address">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter Password">
+            </div>
+            <button type="submit" class="register-btn" id="loginbtn">Login</button>   
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var submitButton = document.getElementById('loginbtn');
+            var form = document.getElementById('loginForm');
+            submitButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                    var formData=new FormData(form);
+                    fetch('/loginsubmit', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.error) {
+                      alert(data.error);
+                  } else {
+                      alert(data.success);
+                      form.reset();
+                      window.location.href = "/";
+                  }
+              }).catch(error => console.error('Error:', error));
+                })
+            });
+      
+    </script>
+</body>
+</html>

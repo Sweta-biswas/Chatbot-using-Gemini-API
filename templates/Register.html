@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register page</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="static/chatbot.gif" alt="Logo" onclick="window.location.href='/';">
+        </div>
+        <div class="logo2">
+            <img src="static/LOGO.png" alt="Logo" style=" margin-right: 650px; height: 40px;">
+        </div>
+    </div>
+    <div class="form-container">
+        <h2>Register</h2>
+        <form id="registrationForm" method="post">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" id="email" name="email" placeholder="Enter Email Address" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Enter Confirm Password" required>
+            </div>
+            <button type="submit" class="register-btn" id="reg-btn">Register</button>
+            <p>Already have an account? <a onclick="window.location.href='/login';">Login here!</a></p>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var submitButton = document.getElementById('reg-btn');
+            var form = document.getElementById('registrationForm');
+            submitButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                var password = document.getElementById('password');
+                var confirmPassword = document.getElementById('confirmPassword');
+                var email= document.getElementById('email');
+               
+                if(email.value===""||password.value===""||confirmPassword.value===""){
+                    alert("Please fill all fields");
+                }
+                else{
+                if (password.value!== confirmPassword.value) {
+                    alert("Passwords don't match");
+                }
+                else{
+                    var formData=new FormData(form);
+                    fetch('/registersubmit', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.error) {
+                      alert(data.error);
+                  } else {
+                      alert(data.success);
+                      form.reset();
+                      window.location.href = "/";
+                  }
+              }).catch(error => console.error('Error:', error));
+                }
+            }
+            });
+        });
+    </script>
+</body>
+</html>
